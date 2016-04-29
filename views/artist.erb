@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Art</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript" src="/art.js"> </script>
+
+</head>
+<body background="http://www.freecreatives.com/wp-content/uploads/2015/05/18.jpg">
+<h1 class="artisttitle"><%= @artist.name %></h1>
+
+<div id="map"></div>
+<% locations = [] %>
+<% @artist.artworks.each do |artwork| %>
+ 		<figure class="paintings">
+ 			<a href=<%="/artwork/"+artwork.id.to_s%>><img src= <%= artwork.image_url %>></a>
+  		<figcaption class="hotpink"><%=  artwork.name + " <br>     " +artwork.location.name %></figcaption>
+		</figure>
+<% locations.push([ artwork.location.name , artwork.location.lat, artwork.location.long, 4]) %>
+<% end %> 
+
+<script>
+
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 2,
+    center: {lat: 40.77 , lng: -73.98 }
+  });
+  setMarkers(map);
+}
+
+// Data for the markers consisting of a name, a LatLng and a zIndex for the
+// order in which these markers should display on top of each other.
+var locations = <%=locations%>;
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+
+function setMarkers(map) {
+  // Adds markers to the map.
+  for (var i = 0; i < locations.length; i++) {
+    var location = locations[i];
+    var marker = new google.maps.Marker({
+      position: {lat: location[1], lng: location[2]},
+      map: map,
+      title: location[0]
+    });
+    var infowindow = new google.maps.InfoWindow({
+    content: location[0]
+  });
+      marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+  }
+}
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap"></script>
+</body>
+</html>

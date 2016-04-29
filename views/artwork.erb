@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Art</title>
+ 	<link rel="stylesheet" type="text/css" href="/style.css">
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+ 	<script type="text/javascript" src="/art.js"> </script>
+
+</head>
+
+<body background="http://oneofakindwalls.com/wp-content/uploads/2013/09/walls1.jpg">
+<h1 class="artworktitle"><%= @artwork.name %></h1>
+<div class="img_display">
+<img class="aw" src= <%= @artwork.image_url %>>
+</div>
+
+
+</body>
+</html>
